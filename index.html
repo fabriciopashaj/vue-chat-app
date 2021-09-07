@@ -7,18 +7,17 @@
 		</script>
 		<meta name="viewport" content="initial-scale=0.374, user-scalable=no" />
 		<meta charset="utf-8" />
-		<script onload="this.remove()" src="./libs/vue.js"></script>
-		<script onload="this.remove()" src="./libs/vuex.js"></script>
-		<script onload="this.remove()" src="./libs/vue-router.js"></script>
-		<script onload="this.remove()" src="./libs/anime.min.js"></script>
-		<script onload="this.remove()" src="./libs/ejs.js"></script>
-		<script onload="this.remove()" src="./libs/gsap.js"></script>
-		<script onload="this.remove()" src="./libsvelocity.js"></script>
-		<script onload="this.remove()" src="./app.component.js"></script>
-		<script onload="this.remove()" src="./app.state-manager.js"></script>
-		<script onload="this.remove()" src="./app.router.js"></script>
-		<link rel="stylesheet" href="./css/styles.css" />
-		<link rel="stylesheet" href="./css/transitions.css" />
+		<script onload="this.remove()" src="/libs/vue.js"></script>
+		<script onload="this.remove()" src="/libs/vuex.js"></script>
+		<script onload="this.remove()" src="/libs/vue-router.js"></script>
+		<script onload="this.remove()" src="/libs/anime.min.js"></script>
+		<script onload="this.remove()" src="/libs/gsap.js"></script>
+		<script onload="this.remove()" src="/libs/velocity.js"></script>
+		<script onload="this.remove()" src="/app.component.js"></script>
+		<script onload="this.remove()" src="/app.state-manager.js"></script>
+		<script onload="this.remove()" src="/app.router.js"></script>
+		<link rel="stylesheet" href="/css/styles.css" />
+		<link rel="stylesheet" href="/css/transitions.css" />
 	</head>
 	<body
 		onload="app.$mount('div#app'); setTimeout(() => document.querySelectorAll('.message-container .sender-name')[0].scrollIntoView(true), 1000);">
@@ -68,16 +67,16 @@
 			</script>
 			<script type="text/x-vue-template" id="Header">
 				<header class="chat-top">
-					<img class="sidebar-switch" src="../../chat_app/public/icons/lines.svg" width="100" height="100"/>
+					<img class="sidebar-switch" src="/icons/lines.svg" width="100" height="100"/>
 					<RouteSwitcher />
-					<img @click="$emit('clear')" id="bin-img" style="position: relative; left: 740px; top: 23px;" src="../../chat_app/public/icons/three-dots.svg" width="85" height="85"/>
+					<img @click="$emit('clear')" id="bin-img" style="position: relative; left: 740px; top: 23px;" src="/icons/three-dots.svg" width="85" height="85"/>
 				</header>
 			</script>
 			<script type="text/x-vue-template" id="WriteField">
 				<form class="msg-write-field">
 					<textarea cols="10" id="msg-fi" v-model="message" class="msg-f" ref="input"></textarea>
 					<span id="img-container" :class="{ 'disabled-button': /[\s\t\n]+/g.test(this.message) || !this.message, 'enabled-button': !/[\s\t\n]/g.test(this.message) && !!this.message }">
-						<img @click="addMessage(true)" id="send-img" height="120px" width="120px" alt="Send" src="../../chat_app/public/icons/send.svg"/>
+						<img @click="addMessage(true)" id="send-img" height="120px" width="120px" alt="Send" src="/icons/send.svg"/>
 					</span>
 				</form>
 			</script>
@@ -86,7 +85,7 @@
 					<div class="sidebar" v-if="$store.state.sidebar.isOpen">
 						<div data-position="left">
 							<div @click.capture="$store.commit('sidebar/setList', 'friends')">
-								<img src="../../chat_app/public/icons/ninjas.svg" />
+								<img src="/icons/ninjas.svg" />
 							</div>
 							<hr />
 							<div v-if="this.servers.length != 0"
@@ -160,7 +159,7 @@
 							<span>
 								<img
 									:src="$root.getSourceById(room.data.id) ||
-										'../../chat_app/public/icons/ninja.svg'" />
+										'/icons/ninja.svg'" />
 								<h4>{{ room.data.name }}</h4>
 							</span>
 						<hr />
@@ -168,6 +167,6 @@
 				</div>
 			</script>
 		</div>
-		<script onload="this.remove()" src="./index.js"></script>
+		<script onload="this.remove()" src="/index.js"></script>
 	</body>
 </html>

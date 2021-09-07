@@ -1,0 +1,6 @@
+root = true
+
+[*.{html,xml,js}]
+indent_type = tab
+indent_size = 2
+tab_width = 2;
