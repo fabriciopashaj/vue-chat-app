@@ -1,0 +1,56 @@
+@font-face {
+	font-family: lemon;
+	src: url('http://localhost:5500/src/fonts/Lemon/Lemon-Regular.ttf') format('truetype');
+}
+@font-face {
+	font-family: Black-Ops-One;
+	src: url('http://localhost:5500/src/fonts/Black_Ops_One/BlackOpsOne-Regular.ttf') format('truetype');
+}
+@font-face {
+	font-family: Architects-Daughter;
+	src: url('http://localhost:5500/src/fonts/Architects_Daughter/ArchitectsDaughter-regular.ttf') format('truetype');
+}
+@font-face {
+	font-family: Cute-Font;
+	src: url('http://localhost:5500/src/fonts/Cute_Font/CuteFont-Regular.ttf') format('truetype');
+}
+@font-face {
+	font-family: Short-Stack;
+	src: url('http://localhost:5500/src/fonts/Short_Stack/ShortStack-Regular.ttf') format('truetype');
+}
+@font-face {
+	font-family: Charm;
+	src: url('http://localhost:5500/src/fonts/Charm/Charm-Regular.ttf') format('truetype');
+}
+@font-face {
+	font-family: Charm-Bold;
+	src: url('http://localhost:5500/src/fonts/Charm/Charm-Bold.ttf') format('truetype');
+}
+@font-face {
+	font-family: Fruktur;
+	src: url('http://localhost:5500/src/fonts/Fruktur/Fruktur-Regular.ttf') format('truetype');
+}
+@font-face {
+font-family: Piedra;
+	src: url('http://localhost:5500/src/fonts/Piedra/Piedra-Regular.ttf') format('truetype');
+}
+@font-face {
+	font-family: Rouge-Script;
+	src: url('http://localhost:5500/src/fonts/Rouge_Script/RougeScript-Regular.ttf') format('truetype');
+}
+@font-face {
+	font-family: Sarina;
+	src: url('http://localhost:5500/src/fonts/Sarina/Sarina-Regular.ttf') format('truetype');
+}
+@font-face {
+	font-family: Sonsie-One;
+	src: url('http://localhost:5500/src/fonts/Sonsie_One/SonsieOne-Regular.ttf') format('truetype');
+}
+@font-face {
+	font-family: Sriracha;
+	src: url('http://localhost:5500/src/fonts/Sriracha/Sriracha-Regular.ttf') format('truetype');
+}
+@font-face {
+	font-family: Reenie-Beanie;
+	src: url('http://localhost:5500/src/fonts/Reenie_Beanie/ReenieBeanie-Regular.ttf') format('truetype');
+}

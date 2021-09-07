@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>ShurikenSocial</title>
+		<script>
+			Object.defineProperties(Object,{values:{value(o){return this.keys(o).map(k =>o[k]);},configurable:false,writable:false},entries:{value(o){return this.keys(o).map(k=>[Number(k)==NaN?k:Number(k),o[k]]);},writable:false,configurable:false}});
+		</script>
+		<meta name="viewport" content="initial-scale=0.374, user-scalable=no" />
+		<meta charset="utf-8" />
+		<script onload="this.remove()" src="./libs/vue.js"></script>
+		<script onload="this.remove()" src="./libs/vuex.js"></script>
+		<script onload="this.remove()" src="./libs/vue-router.js"></script>
+		<script onload="this.remove()" src="./libs/anime.min.js"></script>
+		<script onload="this.remove()" src="./libs/ejs.js"></script>
+		<script onload="this.remove()" src="./libs/gsap.js"></script>
+		<script onload="this.remove()" src="./libsvelocity.js"></script>
+		<script onload="this.remove()" src="./app.component.js"></script>
+		<script onload="this.remove()" src="./app.state-manager.js"></script>
+		<script onload="this.remove()" src="./app.router.js"></script>
+		<link rel="stylesheet" href="./css/styles.css" />
+		<link rel="stylesheet" href="./css/transitions.css" />
+	</head>
+	<body
+		onload="app.$mount('div#app'); setTimeout(() => document.querySelectorAll('.message-container .sender-name')[0].scrollIntoView(true), 1000);">
+		<div id="app"></div>
+
+		<div>
+			<script type="text/v-vue-template" id="App">
+				<div id="app">
+					<AppHeader @clear="clearMessages" />
+					<AppSidebar />
+					<Transition name="fade" mode="out-in">
+						<RouterView />
+					</Transition>
+				</div>
+			</script>
+			<script type="text/x-vue-template" id="AppChatView">
+				<div>
+					<MessagesContainer :messages="$store.state.messages" />
+					<WriteField ref="writeField" />
+				</div>
+			</script>
+			<script type="text/x-vue-template" id="MessagesContainer">
+					<section id="msg-field" class="chat-messages stack-grid">
+						<!--p style="overflow: scroll;" @keyup="this.test = $event.target.innerHTML" v-html="test" contenteditable>Hello world</p-->
+						<div v-show="$store.state.messages.length !== 0">
+							<Message v-for="(message, nth) in messages" :message-data="message" :key="nth" :id="nth" />
+						</div>
+						<h1 style="color: #ff7700;display: flex; justify-content: center; transform: translateY(200px); font-family: lemon; font-size: 50px;" v-if="$store.state.messages.length == 0">No messages</h1>
+						<span id="scroll"></span>
+					</section>
+			</script>
+			<script type="text/x-vue-template" id="Message">
+				<transition name="message" :css="true">
+					<div class="message-container">
+						<div style="display: block;">
+							<span class="sender-name">
+								#{ messageData.sender == this.$store.state.userData.username ? '-- | You | --' : messageData.sender }
+							</span>
+							<small class="timestamp">
+								#{ !!messageData.time?messageData.time+' am':'. . . .' }
+							</small>
+						</div>
+						<p class="message">#{ messageData.text }</p>
+						<small v-if="messageData.seen" class="seen">Seen #{ messageData.seen }</small>
+					</div>
+				</transition>
+			</script>
+			<script type="text/x-vue-template" id="Header">
+				<header class="chat-top">
+					<img class="sidebar-switch" src="../../chat_app/public/icons/lines.svg" width="100" height="100"/>
+					<RouteSwitcher />
+					<img @click="$emit('clear')" id="bin-img" style="position: relative; left: 740px; top: 23px;" src="../../chat_app/public/icons/three-dots.svg" width="85" height="85"/>
+				</header>
+			</script>
+			<script type="text/x-vue-template" id="WriteField">
+				<form class="msg-write-field">
+					<textarea cols="10" id="msg-fi" v-model="message" class="msg-f" ref="input"></textarea>
+					<span id="img-container" :class="{ 'disabled-button': /[\s\t\n]+/g.test(this.message) || !this.message, 'enabled-button': !/[\s\t\n]/g.test(this.message) && !!this.message }">
+						<img @click="addMessage(true)" id="send-img" height="120px" width="120px" alt="Send" src="../../chat_app/public/icons/send.svg"/>
+					</span>
+				</form>
+			</script>
+			<script type="text/x-vue-template" id="Sidebar">
+				<Transition mode="out-in">
+					<div class="sidebar" v-if="$store.state.sidebar.isOpen">
+						<div data-position="left">
+							<div @click.capture="$store.commit('sidebar/setList', 'friends')">
+								<img src="../../chat_app/public/icons/ninjas.svg" />
+							</div>
+							<hr />
+							<div v-if="this.servers.length != 0"
+								v-static v-for="(server, i) in this.servers"
+								:key="i">
+								<img :src="server.iconSource" />
+							</div>
+							<span @click="showCreateOptions">+</span>
+						</div>
+						<div data-position="right">
+							<div v-if="this.sidebarList === 'friends'">
+								<div>
+									<input
+										type="text"
+										ref="findConversationField" />
+								</div>
+								<Friend
+									v-for="friend in this.friends"
+									:friend-data="friend" :key="friend.id"/>
+							</div>
+							<div v-else-if="this.sidebarList === 'servers'">
+								<ServerChannel
+									v-for="(channel,i) in this.selectedServer.channels"
+									:key="i" :channel="channel" />
+							</div>
+						</div>
+					</div>
+				</Transition>
+			</script>
+			<script type="text/x-vue-template" id="MyProfile">
+				<div class="profile">
+					<div>
+						<img
+							:src="$root.getSourceById($store.state.userData.id, 'pictures/profile')"
+							@error="this.$el.src = this.store.commit('getDefaultProfilePictureSource')"
+						/>
+						<span :class="{ [$store.state.status + '-status'] }" ref="statusIndicator" />
+						<div></div>
+					</div>
+				</div>
+			</script>
+			<script type="text/x-vue-template" id="RouteSwitcher">
+				<div class="route-switcher" align="center">
+					<div
+						v-for="route in $store.state.routes"
+						:key="route.path"
+						@click.capture="$store.commit('changeRoute', route.path)"
+						:class="{ 'active': $store.state.currentRoute === route.path }">
+						<RouterLink :to="route.path">
+							<span style="color: black;">{{ route.text }}</span>
+						</RouterLink>
+					</div>
+				</div>
+			</script>
+			<script type="text/x-vue-template" id="AppProfileView"></script>
+			<script type="text/x-vue-template" id="Chats">
+				<div class="chats-list">
+					<div v-if="$route.query.q !== 'search'"
+						@click.capture="$router.push('/chats?q=search')">
+						<img /><span>Search</span>
+					</div>
+					<div v-else>
+						<input type="text" autofocus
+							v-model="$store.state.searchString" />
+					</div>
+					<hr />
+					<div
+						v-for="rooms in ($route.query.q == 'search' ? this.filteredRooms : $store.state.rooms)"
+						:key="room.data.name"
+						@click.capture="$router.push('/chats/' + room.name)">
+							<span>
+								<img
+									:src="$root.getSourceById(room.data.id) ||
+										'../../chat_app/public/icons/ninja.svg'" />
+								<h4>{{ room.data.name }}</h4>
+							</span>
+						<hr />
+					</div>
+				</div>
+			</script>
+		</div>
+		<script onload="this.remove()" src="./index.js"></script>
+	</body>
+</html>

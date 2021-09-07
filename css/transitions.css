@@ -1,0 +1,44 @@
+.fade-enter-active {
+	transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to {
+	opacity: 0;
+}
+.fade-leave-active {
+	display: none;
+}
+
+
+.message-change-enter-active, .message-change-leave-active {
+	transition: height 5s linear, opacity 3s linear, padding 5s linear;
+}
+.message-change-enter, .message-change-leave-to {
+	height: 0;
+	opacity: 0;
+	padding: 0;
+}
+
+.bounce-enter-active {
+	animation: bounce-in .5s;
+	display: relative;
+	transition: bottom .5s cubic-bezier(1.0, 0.6, 0.3, 0.45, 1.0);
+}
+.bounce-leave-active {
+	animation: bounce-in .5s reverse;
+	display: absolute;
+	transition: height .5s linear;
+}
+.bounce-leave-to {
+	height: 0;
+}
+@keyframes bounce-in {
+	0% {
+		transform: scale(0);
+	}
+	50% {
+		transform: scale(1.5);
+	}
+	100% {
+		transform: scale(1) translatey(-60px);
+	}
+}

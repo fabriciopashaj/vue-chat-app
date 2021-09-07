@@ -1,0 +1,150 @@
+<!-- <?xml version="1.0" ?>
+<!DOCTYPE xml> -->
+<app-components>
+	<component name="message" target="@root/'all-messages-container'">
+		<template>
+			<div class="message-container" :style="{ 'flex: 3 !important;': user != messageData.sender || (user == messageData.sender && !messageData.seen) }">
+				<span class="sender-name">{{ messageData.sender == user ? '-- | You | --' : messageData.sender }}</span>
+				<pre class="message">{{ messageData.text }}</pre>
+				<small v-if="!!messageData.time" class="timestamp"><pre>Sent <time>{{ messageData.time }}</time></pre></small>
+				<small v-if="messageData.seen" class="seen">Seen {{ messageData.seenAt }}</small>
+			</div>
+		</template>
+		<component-data>
+			{
+				props: {
+					messageData: {
+						type: Object,
+						required: true
+					},
+					user: {
+						type: String,
+						required: true
+					}
+				},
+				data() {
+					return {};
+				}
+			}
+		</component-data>
+	</component>
+	<component name="all-messages-container" target="@root">
+		<template>
+			<section id="msg-field" class="chat-messages stack-grid-container">
+				<div v-show="!!(this.messages) && this.messages !== []">
+					<message v-for="(message, nth) in messages" :message-data="message" :key="nth" :user="user"></message>
+					<h1 style="color: #ff7700;display: flex; justify-content: center; transform: translateY(200px); font-family: lemon; font-size: 50px;" v-show="messages == [] || !messages">No messages</h1>
+				</div>
+			</section>
+		</template>
+		<component-data>
+			{
+				props: {
+					messages: {
+						type: Array,
+						required: true,
+						default: []
+					},
+					user: {
+						type: String,
+						requiredf true
+					}
+				},
+				data() {
+					return {};
+				}
+			}
+		</component-data>
+	</component>
+	<component name="app-header" target="global">
+		<template>
+			<header class="chat-top">
+				<img class="sidebar-switch" src="/storage/emulated/0/Pictures/Electronic/nodejs-projects/chat_app/public/icons/lines.svg" width="100" height="100"/>
+				<img @click="$emit('clear')" id="bin-img" style="position: relative; left: 755px; top: 6.5px" src="/storage/emulated/0/Pictures/Electronic/nodejs-projects/chat_app/public/icons/three-dots.svg" width="85" height="85"/>
+			</header>
+		</template>
+	</component>
+	<component name="app-sidebar" target="global">
+		<template>
+			<div data-role="sidebar">
+				<my-profile :data="this.userData" type="small"></my-profile>
+				<online-users :online="this.onlineUsers" users="this.users" for="sidebar"></online-users>
+				<hr/>
+				<extra-option v-for="(option, index) in this.appOptions" :option="option"></extra-option>
+				<extra-option :options="this.helpAndSupportOptions" option-class="help-and-support"></extra-option>
+			</div>
+		</template>
+	</component>
+	<component name="write-field" target="@root">
+		<template>
+			<form class="msg-write-field">
+				<textarea cols="10" id="msg-fi" v-model="message" class="msg-f">
+				</textarea>
+				<span id="img-container">
+					<img @click="AddMessage(true)" id="send-img" height="120px" width="120px" alt="Send" src="/storage/emulated/0/Pictures/Electronic/nodejs-projects/chat_app/public/icons/send.svg"/>
+				</span>
+			</form>
+		</template>
+		<component-data>
+			{
+				props: {
+					messagesCount: {
+						type: Number,
+						required: true,
+						default: 0
+					},
+					user: {
+						type: String,
+						required: true,
+					},
+					isEmpty: Boolean
+				},
+				data() {
+					return {
+						message: ''
+					};
+				},
+				methods: {
+					AddMessage(isMe, sender, text) {
+						let tr = /[\s\t\n\0]+/g;
+						let focus = () => document.querySelector('#msg-fi').focus();
+						if((!!text && text !== '' && !(tr.test(text))) || (!!this.message && this.messsage !== '' && !(tr.test(this.message)))) {
+							let go = true;
+							let rmarr = [];
+							let reg = /([^\s|\t|\n|\r|\0]*.*[^\s|\t|\n|\r|\0]*)/;
+							let txt = this.message.split('\n');
+							let r = txt.filter(s => !!s || !(/[\s\t\n\r]+/.test(s)));
+							text = r.map(e => reg.exec(e)[0]).join('\n');
+							let msg = { sender: (isMe ? this.user : sender), text, id: this.messagesCount, time: formatTime('hh: min') };
+							this.$emit('add-message', msg);
+							this.empty = true;
+							focus();
+							this.message = '';
+						} else if(!text && tr.test(this.message)) {
+							this.message = '';
+							focus();
+						} else
+							focus();
+					},
+				}
+			}
+		</component-data>
+	</component>
+	<component name="extra-option" target="global">
+		<template>
+
+		</template>
+	</component>
+	<component name="app-chat-view" target="global">
+		<template>
+			<div class="chat-room">
+				<slot></slot>
+			</div>
+		</template>
+	</component>
+	<component name="">
+		<template>
+
+		</template>
+	</component>
+</app-components>

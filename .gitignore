@@ -1,0 +1,5 @@
+t.*
+.*.sw*
+/tmp
+/css/font-declarations.css
+/css/fonts.css
